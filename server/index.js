@@ -11,7 +11,7 @@ const { throwError } = require("./utils");
 const allRoutes = require("./routes");
 
 const app = express();
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8080;
 
 app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" }));
 app.use(express.json());
