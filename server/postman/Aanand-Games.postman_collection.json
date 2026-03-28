@@ -1,0 +1,1774 @@
+{
+  "info": {
+    "_postman_id": "e7aa8e13-2a18-410b-868f-05f23990bec4",
+    "name": "Aanand-Games",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "18198174",
+    "_collection_link": "https://go.postman.co/collection/18198174-e7aa8e13-2a18-410b-868f-05f23990bec4?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Aanand Admin\",\r\n    \"email\": \"admin.aanandgames@gmail.com\",\r\n    // \"mobile\": 8889524382, // email or mobile any one of them is required , if both so optional \r\n    \"password\": \"123456\",\r\n    \"role\": \"admin\", // role is optonal by default it taking user\r\n    \"fcmToken\": \"dkcdkmdedmeidcwd\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}auth/register",
+              "host": ["{{Aanand-baseUrl}}auth"],
+              "path": ["register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "loginWithPassword",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"type\": \"email\", // type is required for email login == email , mobile login == mobile\r\n    \"email\": \"admin.aanandgames@gmail.com\",\r\n    // \"mobile\": \"8889524382\",\r\n    \"password\": \"123456\",\r\n    \"role\": \"admin\", // role is optonal by default it taking user\r\n    \"fcmToken\": \"dkcdkmdedmeidcwd\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}auth/login",
+              "host": ["{{Aanand-baseUrl}}auth"],
+              "path": ["login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "loginOrSigninWithEmail",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"devrathod96445@gmail.com\"\r\n    //  \"role\": \"user\" // role is optonal by default it taking user\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}auth/loginOrSignin-with-email",
+              "host": ["{{Aanand-baseUrl}}auth"],
+              "path": ["loginOrSignin-with-email"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "verifyOTPWithEmail",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"devrathod96445@gmail.com\",\r\n    //  \"role\": \"user\", // role is optonal by default it taking user\r\n    \"otp\": \"786065\",\r\n    \"fcmToken\": \"jdnwejfweibcijwd c\",\r\n    //  \"loginType\": \"email\", // optional for other login by others\r\n    \"currentScreen\": \"LANDING_SCREEN\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}auth/verify-otp-email",
+              "host": ["{{Aanand-baseUrl}}auth"],
+              "path": ["verify-otp-email"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "loginOrSigninWithMobile",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"mobile\": 8889524382\r\n    // \"role\": \"user\" // role is optonal by default it taking user\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}auth/loginOrSignin-with-mobile",
+              "host": ["{{Aanand-baseUrl}}auth"],
+              "path": ["loginOrSignin-with-mobile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "verifyOtpWithMobile",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"sessionId\": \"6cf9e008-c7c1-4143-9917-fba6f7dd18dc\",\r\n    \"mobile\": 8889524382,\r\n    \"otp\": \"419996\",\r\n  //  \"role\": \"user\", // role is optonal by default it taking user\r\n    \"fcmToken\": \"jdnwejfweibcijwd c\",\r\n  //  \"loginType\": \"mobile\",\r\n    \"currentScreen\": \"LANDING\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}auth/verify-otp-mobile",
+              "host": ["{{Aanand-baseUrl}}auth"],
+              "path": ["verify-otp-mobile"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "getUser",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}users/get",
+              "host": ["{{Aanand-baseUrl}}users"],
+              "path": ["get"],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "68c32f6dc54e49c1ce5b0c47",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateUser",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Sunny",
+                  "type": "text",
+                  "uuid": "adcdff3d-886f-40a1-9cbd-009d5e393cb9",
+                  "disabled": true
+                },
+                {
+                  "key": "address",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "af53c97f-540e-49a0-b916-c1bf105fc7d1",
+                  "disabled": true
+                },
+                {
+                  "key": "email",
+                  "value": "sunny@gmail.com",
+                  "type": "text",
+                  "uuid": "e0dd9786-344b-4acc-a927-ce46e0e7dd77",
+                  "disabled": true
+                },
+                {
+                  "key": "mobile",
+                  "value": "8210574144",
+                  "type": "text",
+                  "uuid": "a8a4f26b-025e-4252-99b0-ca35cc8e8866",
+                  "disabled": true
+                },
+                {
+                  "key": "dob",
+                  "value": "2000-10-25",
+                  "type": "text",
+                  "uuid": "feba67e5-29cc-4125-8872-232d8a00662e",
+                  "disabled": true
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "414c75a3-6d75-43ab-98b6-ac83a7d360eb",
+                  "src": "/C:/Users/acar/OneDrive/Pictures/Saved Pictures/Screenshots/Screenshot 2026-03-26 130732.png"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}users/update",
+              "host": ["{{Aanand-baseUrl}}users"],
+              "path": ["update"],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": null,
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Subscriptions",
+      "item": [
+        {
+          "name": "addSubscription",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Monthly Growth Plan\",\r\n    \"description\": \"Full access to all premium tools for a month\",\r\n    \"price\": 199,\r\n    \"type\": \"monthly\",\r\n    \"benefits\": [\r\n        \"Unlimited downloads\",\r\n        \"Full analytics dashboard\",\r\n        \"Dedicated support\"\r\n    ],\r\n    \"limitations\": [\r\n        \"Limited team members (max 5)\"\r\n    ],\r\n    \"isActive\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}subscriptions/add",
+              "host": ["{{Aanand-baseUrl}}subscriptions"],
+              "path": ["add"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "createCategory",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Sona Masoori",
+                  "type": "text",
+                  "uuid": "1728835c-36ba-4284-a67d-752616bff315"
+                },
+                {
+                  "key": "description",
+                  "value": "Best rice for India",
+                  "type": "text",
+                  "uuid": "69c4a789-b835-4fa0-b01f-77537106eb5b"
+                },
+                {
+                  "key": "image",
+                  "description": "optional by default it take default image",
+                  "type": "text",
+                  "uuid": "1138d99b-28f5-4ed0-97f0-ed938db51bd1",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "false",
+                  "description": "optional by default it take true",
+                  "type": "text",
+                  "uuid": "c1328ece-1ad8-4036-a715-a6bfc4156ab1",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}categories/create",
+              "host": ["{{Aanand-baseUrl}}categories"],
+              "path": ["create"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getCategory",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-userToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}categories/get/68f7bdcb461563b476b71cd9",
+              "host": ["{{Aanand-baseUrl}}categories"],
+              "path": ["get", "68f7bdcb461563b476b71cd9"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getAllCategories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-userToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}categories/getAll",
+              "host": ["{{Aanand-baseUrl}}categories"],
+              "path": ["getAll"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "diwali",
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "false",
+                  "disabled": true
+                },
+                {
+                  "key": "fromDate",
+                  "value": "2025-01-01",
+                  "disabled": true
+                },
+                {
+                  "key": "toDate",
+                  "value": "2025-12-31",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "disabled": true
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc",
+                  "description": "\"asc\" for ascending order, \"desc\" for decreasing order",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateCategory",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-userToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Hip",
+                  "type": "text",
+                  "uuid": "bb954c23-bd50-44aa-88ce-5859b436eaa3",
+                  "disabled": true
+                },
+                {
+                  "key": "description",
+                  "value": "hop hop",
+                  "type": "text",
+                  "uuid": "f59d9897-46f2-406e-b72f-45a51a8a59c8",
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "true",
+                  "description": "work as toggle if passed in body",
+                  "type": "text",
+                  "uuid": "20a71b2c-4793-49b9-8173-039a83f7c7b6",
+                  "disabled": true
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "8529e30a-33eb-46ee-926e-7062239fffba",
+                  "src": "/C:/Users/acar/OneDrive/Pictures/Saved Pictures/Screenshots/Screenshot 2025-10-05 015005.png",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}categories/update/68eac7f6515f2f9340150c6a",
+              "host": ["{{Aanand-baseUrl}}categories"],
+              "path": ["update", "68eac7f6515f2f9340150c6a"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteCategory",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-userToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}categories/delete/68eac7f6515f2f9340150c6a",
+              "host": ["{{Aanand-baseUrl}}categories"],
+              "path": ["delete", "68eac7f6515f2f9340150c6a"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Privacy&Policy",
+      "item": [
+        {
+          "name": "createPrivacy&Policy",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"product purchase\",\r\n    \"description\": \"not to be return\",\r\n    \"isActive\": true // optional\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}privacy-and-policies/create",
+              "host": ["{{Aanand-baseUrl}}privacy-and-policies"],
+              "path": ["create"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getPrivacy&Policy",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}privacy-and-policies/get/692b3849fb80cae8a44054a0",
+              "host": ["{{Aanand-baseUrl}}privacy-and-policies"],
+              "path": ["get", "692b3849fb80cae8a44054a0"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getAllPrivacy&Policies",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}privacy-and-policies/getAll",
+              "host": ["{{Aanand-baseUrl}}privacy-and-policies"],
+              "path": ["getAll"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": true
+                },
+                {
+                  "key": "title",
+                  "value": "product",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "diwali",
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "false",
+                  "disabled": true
+                },
+                {
+                  "key": "fromDate",
+                  "value": "2025-01-01",
+                  "disabled": true
+                },
+                {
+                  "key": "toDate",
+                  "value": "2025-12-31",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "disabled": true
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc",
+                  "description": "\"asc\" for ascending order, \"desc\" for decreasing order",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updatePrivacy&Policy",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    // \"title\": \"product purchase\",\r\n    \"description\": \"not to be return in a day\",\r\n    \"isActive\": false\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}privacy-and-policies/update/692b3849fb80cae8a44054a0",
+              "host": ["{{Aanand-baseUrl}}privacy-and-policies"],
+              "path": ["update", "692b3849fb80cae8a44054a0"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deletePrivacy&Policy",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}privacy-and-policies/delete/692b3849fb80cae8a44054a0",
+              "host": ["{{Aanand-baseUrl}}privacy-and-policies"],
+              "path": ["delete", "692b3849fb80cae8a44054a0"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Terms&Conditions",
+      "item": [
+        {
+          "name": "createTerm&Condition",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"product purchase\",\r\n    \"description\": \"not to be return\",\r\n    \"isActive\": true // optional\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}terms-and-conditions/create",
+              "host": ["{{Aanand-baseUrl}}terms-and-conditions"],
+              "path": ["create"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getTerm&Condition",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}terms-and-conditions/get/692b50f8687079bfbd1c1c94",
+              "host": ["{{Aanand-baseUrl}}terms-and-conditions"],
+              "path": ["get", "692b50f8687079bfbd1c1c94"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getAllTerms&Conditions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}terms-and-conditions/getAll",
+              "host": ["{{Aanand-baseUrl}}terms-and-conditions"],
+              "path": ["getAll"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": true
+                },
+                {
+                  "key": "title",
+                  "value": "product",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "diwali",
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "false",
+                  "disabled": true
+                },
+                {
+                  "key": "fromDate",
+                  "value": "2025-01-01",
+                  "disabled": true
+                },
+                {
+                  "key": "toDate",
+                  "value": "2025-12-31",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "disabled": true
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc",
+                  "description": "\"asc\" for ascending order, \"desc\" for decreasing order",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateTerm&Condition",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    // \"title\": \"product purchase\",\r\n    \"description\": \"not to be return in a day\",\r\n    \"isActive\": false\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}terms-and-conditions/update/692b50f8687079bfbd1c1c94",
+              "host": ["{{Aanand-baseUrl}}terms-and-conditions"],
+              "path": ["update", "692b50f8687079bfbd1c1c94"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteTerm&Condition",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}terms-and-conditions/delete/692b50f8687079bfbd1c1c94",
+              "host": ["{{Aanand-baseUrl}}terms-and-conditions"],
+              "path": ["delete", "692b50f8687079bfbd1c1c94"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "SubCategories",
+      "item": [
+        {
+          "name": "createSubCategory",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Hip hop 74",
+                  "type": "text",
+                  "uuid": "1728835c-36ba-4284-a67d-752616bff315"
+                },
+                {
+                  "key": "description",
+                  "value": "Hip hop songs for diwali",
+                  "type": "text",
+                  "uuid": "69c4a789-b835-4fa0-b01f-77537106eb5b"
+                },
+                {
+                  "key": "image",
+                  "description": "optional by default it take default image",
+                  "type": "file",
+                  "uuid": "1138d99b-28f5-4ed0-97f0-ed938db51bd1",
+                  "src": "/C:/Users/acar/OneDrive/Pictures/b84e92f0-cb22-458e-aa27-9abb9a602fdd_1421x699.jpg"
+                },
+                {
+                  "key": "isActive",
+                  "value": "false",
+                  "description": "optional by default it take true",
+                  "type": "text",
+                  "uuid": "c1328ece-1ad8-4036-a715-a6bfc4156ab1",
+                  "disabled": true
+                },
+                {
+                  "key": "",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "00b6bae8-5a47-4e5b-8d82-cbdad6201268",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}subCategories/68eb935eadba007ce6b3cfda/create",
+              "host": ["{{Aanand-baseUrl}}subCategories"],
+              "path": ["68eb935eadba007ce6b3cfda", "create"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getSubCategory",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}subCategories/get/68eb949cadba007ce6b3cfe0",
+              "host": ["{{Aanand-baseUrl}}subCategories"],
+              "path": ["get", "68eb949cadba007ce6b3cfe0"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getAllSubCategories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-userToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}subCategories/getAll",
+              "host": ["{{Aanand-baseUrl}}subCategories"],
+              "path": ["getAll"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "diwali",
+                  "disabled": true
+                },
+                {
+                  "key": "categoryId",
+                  "value": "68eb935eadba007ce6b3cfda",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "false",
+                  "disabled": true
+                },
+                {
+                  "key": "fromDate",
+                  "value": "2025-01-01",
+                  "disabled": true
+                },
+                {
+                  "key": "toDate",
+                  "value": "2025-12-31",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "disabled": true
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc",
+                  "description": "\"asc\" for ascending order, \"desc\" for decreasing order",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateSubCategory",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Hip",
+                  "type": "text",
+                  "uuid": "bb954c23-bd50-44aa-88ce-5859b436eaa3",
+                  "disabled": true
+                },
+                {
+                  "key": "description",
+                  "value": "hop hop",
+                  "type": "text",
+                  "uuid": "f59d9897-46f2-406e-b72f-45a51a8a59c8",
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "true",
+                  "description": "work as toggle if passed in body",
+                  "type": "text",
+                  "uuid": "20a71b2c-4793-49b9-8173-039a83f7c7b6",
+                  "disabled": true
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "8529e30a-33eb-46ee-926e-7062239fffba",
+                  "src": "/C:/Users/acar/OneDrive/Pictures/Saved Pictures/Screenshots/Screenshot 2025-10-11 230941.png",
+                  "disabled": true
+                },
+                {
+                  "key": "categoryId",
+                  "value": "68eb935eadba007ce6b3cfda",
+                  "type": "text",
+                  "uuid": "77191513-b1e5-49f1-9904-b9f2d63362e7",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}subCategories/update/68eb94c2adba007ce6b3cfe8",
+              "host": ["{{Aanand-baseUrl}}subCategories"],
+              "path": ["update", "68eb94c2adba007ce6b3cfe8"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteSubCategory",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}subCategories/delete/68eb949cadba007ce6b3cfe0",
+              "host": ["{{Aanand-baseUrl}}subCategories"],
+              "path": ["delete", "68eb949cadba007ce6b3cfe0"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "createProduct",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "subCategoryId",
+                  "value": "69025bea600580e9ddd73079",
+                  "type": "text",
+                  "uuid": "c14ffdb5-d951-40db-8336-21b66e00830a"
+                },
+                {
+                  "key": "name",
+                  "value": "My choise",
+                  "type": "text",
+                  "uuid": "0369e73b-f043-4c05-bfa0-858713cce041"
+                },
+                {
+                  "key": "description",
+                  "value": "Good rice mumma 's made",
+                  "type": "text",
+                  "uuid": "3dcd3852-b83a-4130-8bcd-1ea9c8ae3ab7"
+                },
+                {
+                  "key": "brand",
+                  "value": "Shri krishna",
+                  "type": "text",
+                  "uuid": "83b8412b-c3df-4907-922a-e817806386b8"
+                },
+                {
+                  "key": "weightInKg",
+                  "value": "12",
+                  "type": "text",
+                  "uuid": "6e41c0d0-3b16-4611-9c9f-c8c235a214dd"
+                },
+                {
+                  "key": "generalPrice",
+                  "value": "1200",
+                  "type": "text",
+                  "uuid": "368fa22b-f9d2-4d75-986b-4409d998f232"
+                },
+                {
+                  "key": "stockQuantity",
+                  "value": "115",
+                  "type": "text",
+                  "uuid": "752635c1-f5da-4a95-b9c1-81d8a397736f"
+                },
+                {
+                  "key": "image",
+                  "description": "optional field",
+                  "type": "file",
+                  "uuid": "99b56808-a3f9-4139-9ec2-c32ce77eae1f",
+                  "src": "/C:/Users/acar/OneDrive/Pictures/Saved Pictures/Screenshots/Screenshot 2025-10-30 202315.png",
+                  "disabled": true
+                },
+                {
+                  "key": "type",
+                  "value": "grocery",
+                  "description": "optional field",
+                  "type": "text",
+                  "uuid": "e528032b-4735-4d0d-a0cf-1ac2becbcd54",
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "true",
+                  "description": "optional field",
+                  "type": "text",
+                  "uuid": "16a60f4e-7ee6-49b2-acb3-36baf31f35a1",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}products/create",
+              "host": ["{{Aanand-baseUrl}}products"],
+              "path": ["create"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getAllProducts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-userToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}products/getAll",
+              "host": ["{{Aanand-baseUrl}}products"],
+              "path": ["getAll"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": true
+                },
+                {
+                  "key": "categoryId",
+                  "value": "690e4108e901db50521ce7bf",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "subCategoryId",
+                  "value": "690f82c1c43b3cf19a8aa14f",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "search",
+                  "value": "apple",
+                  "disabled": true
+                },
+                {
+                  "key": "price",
+                  "value": "500",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "minPrice",
+                  "value": "100",
+                  "disabled": true
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "500",
+                  "disabled": true
+                },
+                {
+                  "key": "weightInKg",
+                  "value": "25",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "minWeight",
+                  "value": "0.5",
+                  "disabled": true
+                },
+                {
+                  "key": "maxWeight",
+                  "value": "2",
+                  "disabled": true
+                },
+                {
+                  "key": "fromDate",
+                  "value": "2025-01-01",
+                  "disabled": true
+                },
+                {
+                  "key": "toDate",
+                  "value": "2025-12-31",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "generalPrice",
+                  "description": "generalPrice, createdAt, stockQuantity,  weightInKg sort by any one of these",
+                  "disabled": true
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "asc",
+                  "description": "desc for decending order",
+                  "disabled": true
+                },
+                {
+                  "key": "SKU",
+                  "value": "GROCERY-NVS-BRAND-SADA-RICE-5",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "type",
+                  "value": "grocery",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "name",
+                  "value": "Bashmati",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "brand",
+                  "value": "Keshari",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "stockQuantity",
+                  "value": "40",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "minStock",
+                  "value": "12",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "maxStock",
+                  "value": "50",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "false",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getProduct",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-userToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}products/get/6903ba470d8370c705b45e94",
+              "host": ["{{Aanand-baseUrl}}products"],
+              "path": ["get", "6903ba470d8370c705b45e94"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteProduct",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-userToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}products/delete/692b3c6c3a4db03ea34527dc",
+              "host": ["{{Aanand-baseUrl}}products"],
+              "path": ["delete", "692b3c6c3a4db03ea34527dc"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateProductLocations",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"locations\": [\r\n        {\r\n            \"locationId\": \"693dca4654bc7ad1a7683840\",\r\n            \"price\": 1000, // optional  default product price\r\n            \"stockQuantity\": 20 // optional  default product stock \r\n        },\r\n        {\r\n            \"locationId\": \"693dd0d6048bac1461c877bc\",\r\n            \"price\": 10000,\r\n            \"stockQuantity\": 15\r\n        }\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}products/update-product-locations/692600e7d484ac0d310ffc73",
+              "host": ["{{Aanand-baseUrl}}products"],
+              "path": ["update-product-locations", "692600e7d484ac0d310ffc73"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "removeProductLocations",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"locationIds\": [\r\n        \"6939be550c231c59bab2f87e\"\r\n    ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}products/remove-product-locations/692b3c6c3a4db03ea34527dc",
+              "host": ["{{Aanand-baseUrl}}products"],
+              "path": ["remove-product-locations", "692b3c6c3a4db03ea34527dc"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "checkProductDelivery",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"zipCode\": \"400098\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}products/checkDelivery/692b3c6c3a4db03ea34527dc",
+              "host": ["{{Aanand-baseUrl}}products"],
+              "path": ["checkDelivery", "692b3c6c3a4db03ea34527dc"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Banners",
+      "item": [
+        {
+          "name": "createBanner",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-adminToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "NVS RICE",
+                  "type": "text",
+                  "uuid": "7a6f3585-6ffb-43b5-9a96-8cff229cb541"
+                },
+                {
+                  "key": "description",
+                  "value": "hello ",
+                  "type": "text",
+                  "uuid": "f4ba558c-2200-4708-89a3-c2229fa5ed60"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "uuid": "c4f26e72-3a89-45ac-ad0a-fc36b8e46f37",
+                  "src": "/C:/Users/acar/Downloads/nvs-logo.jpg"
+                },
+                {
+                  "key": "video",
+                  "type": "file",
+                  "uuid": "02169bfb-6a5e-454d-8bbc-8fea7579fc27",
+                  "value": null,
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "",
+                  "type": "text",
+                  "uuid": "33797d37-c573-44f3-b254-5f717d2f40da",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}banners/create",
+              "host": ["{{Aanand-baseUrl}}banners"],
+              "path": ["create"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getBanner",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-userToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}banners/get/691e1f29b298a0aa21b9e880",
+              "host": ["{{Aanand-baseUrl}}banners"],
+              "path": ["get", "691e1f29b298a0aa21b9e880"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getAllBanners",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-userToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}banners/getAll",
+              "host": ["{{Aanand-baseUrl}}banners"],
+              "path": ["getAll"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "diwali",
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "false",
+                  "disabled": true
+                },
+                {
+                  "key": "fromDate",
+                  "value": "2025-01-01",
+                  "disabled": true
+                },
+                {
+                  "key": "toDate",
+                  "value": "2025-12-31",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "disabled": true
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteBanner",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-userToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}banners/delete/6920acf962df34d6535ffc53",
+              "host": ["{{Aanand-baseUrl}}banners"],
+              "path": ["delete", "6920acf962df34d6535ffc53"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Locations",
+      "item": [
+        {
+          "name": "createLocation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-userToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"coordinates\": [ // on priority required if not then fill all required details\r\n        14.46,\r\n        75.90\r\n    ],\r\n    \"userId\": \"6937219cf3f52c1e86504fc0\" // optional for user location\r\n    // \"name\": \"Main Shop\", // optional for user location name or product location name\r\n    // \"shopOrBuildingNumber\": \"12A\", // optional for user house no. OR product shop no.\r\n    // \"address\": \"Near Market Road\", // required if coordinates not provided\r\n    // \"city\": \"Davanagere\", // required if coordinates not provided\r\n    // \"district\": \"Davanagere\", // required if coordinates not provided\r\n    // \"zipcode\": \"577007\", // required if coordinates not provided\r\n    // \"state\": \"Karnataka\", // required if coordinates not provided\r\n    // \"area\": \"davanagere taluku\", // optional \r\n    // \"country\": \"India\" // optional \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{Aanand-baseUrl}}locations/create",
+              "host": ["{{Aanand-baseUrl}}locations"],
+              "path": ["create"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getLocation",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-userToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}locations/get/692763c5da603cbd31249a81",
+              "host": ["{{Aanand-baseUrl}}locations"],
+              "path": ["get", "692763c5da603cbd31249a81"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getAllLocations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-userToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}locations/getAll?country=india",
+              "host": ["{{Aanand-baseUrl}}locations"],
+              "path": ["getAll"],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "NAME",
+                  "disabled": true
+                },
+                {
+                  "key": "shopOrBuildingNumber",
+                  "value": "NUMBER",
+                  "disabled": true
+                },
+                {
+                  "key": "userId",
+                  "value": "USERID",
+                  "disabled": true
+                },
+                {
+                  "key": "address",
+                  "value": "ADDRESS",
+                  "disabled": true
+                },
+                {
+                  "key": "area",
+                  "value": "AREA",
+                  "disabled": true
+                },
+                {
+                  "key": "city",
+                  "value": "CITY",
+                  "disabled": true
+                },
+                {
+                  "key": "district",
+                  "value": "DISTRICT",
+                  "disabled": true
+                },
+                {
+                  "key": "state",
+                  "value": "STATE",
+                  "disabled": true
+                },
+                {
+                  "key": "zipcode",
+                  "value": "ZIP",
+                  "disabled": true
+                },
+                {
+                  "key": "country",
+                  "value": "india"
+                },
+                {
+                  "key": "search",
+                  "value": "",
+                  "disabled": true
+                },
+                {
+                  "key": "isActive",
+                  "value": "false",
+                  "disabled": true
+                },
+                {
+                  "key": "fromDate",
+                  "value": "2025-01-01",
+                  "disabled": true
+                },
+                {
+                  "key": "toDate",
+                  "value": "2025-12-31",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "disabled": true
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteLocation",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Aanand-userToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{Aanand-baseUrl}}locations/delete/692763c5da603cbd31249a81",
+              "host": ["{{Aanand-baseUrl}}locations"],
+              "path": ["delete", "692763c5da603cbd31249a81"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [""]
+      }
+    }
+  ]
+}
