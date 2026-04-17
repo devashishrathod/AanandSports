@@ -8,12 +8,13 @@ exports.deleteCourt = async (id) => {
   if (!court || court.isDeleted) throwError(404, "Court not found");
 
   const groundId = String(court.groundId);
+  const sportId = String(court.sportId);
 
   court.isDeleted = true;
   court.isActive = false;
   court.updatedAt = new Date();
   await court.save();
 
-  await syncGroundNoOfCourts(groundId);
+  await syncGroundNoOfCourts(groundId, sportId);
   return;
 };

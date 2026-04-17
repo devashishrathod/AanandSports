@@ -22,6 +22,7 @@ exports.updateGround = async (id, payload = 0, bannersFiles) => {
       description,
       venueId,
       sportId,
+      sports,
       type,
       openingTime,
       closingTime,
@@ -37,19 +38,38 @@ exports.updateGround = async (id, payload = 0, bannersFiles) => {
       ground.venueId = venueId;
     }
 
-    if (sportId) {
-      validateObjectId(sportId, "Sport Id");
-      const sport = await Sport.findById(sportId);
-      if (!sport || sport.isDeleted) throwError(404, "Sport not found!");
-      ground.sportId = sportId;
+    const finalSports =
+      Array.isArray(sports) && sports.length
+        ? sports
+        : sportId
+          ? [sportId]
+          : null;
+    if (finalSports) {
+      const uniqueSports = Array.from(new Set(finalSports.map(String)));
+      for (const sId of uniqueSports) {
+        validateObjectId(sId, "Sport Id");
+        const sport = await Sport.findById(sId);
+        if (!sport || sport.isDeleted) throwError(404, "Sport not found!");
+      }
+      ground.sports = uniqueSports;
+      const existingMeta = Array.isArray(ground.sportsMeta)
+        ? ground.sportsMeta
+        : [];
+      const metaBySport = new Map(
+        existingMeta.map((m) => [String(m.sportId), m]),
+      );
+      ground.sportsMeta = uniqueSports.map((sId) => {
+        const found = metaBySport.get(String(sId));
+        return { sportId: sId, noOfCourts: found?.noOfCourts || 0 };
+      });
     }
 
     if (name) {
       name = name.toLowerCase();
       const existing = await Ground.findOne({
         _id: { $ne: id },
+        academyId: ground.academyId,
         venueId: ground.venueId,
-        sportId: ground.sportId,
         name,
         isDeleted: false,
       });
@@ -90,7 +110,8 @@ exports.updateGround = async (id, payload = 0, bannersFiles) => {
 
   return await Ground.findById(id)
     .populate({ path: "venueId", select: "name description image" })
-    .populate({ path: "sportId", select: "name description image" })
+    .populate({ path: "sports", select: "name description image" })
+    .populate({ path: "academyId", select: "name description image" })
     .populate({
       path: "banners",
       select: "name description image video isActive",

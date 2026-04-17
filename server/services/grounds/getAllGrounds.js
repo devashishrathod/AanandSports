@@ -37,7 +37,7 @@ exports.getAllGrounds = async (query) => {
 
   if (sportId) {
     validateObjectId(sportId, "Sport Id");
-    match.sportId = new mongoose.Types.ObjectId(sportId);
+    match.sports = new mongoose.Types.ObjectId(sportId);
   }
 
   if (type) match.type = { $regex: new RegExp(type, "i") };
@@ -74,7 +74,8 @@ exports.getAllGrounds = async (query) => {
       name: 1,
       description: 1,
       venueId: 1,
-      sportId: 1,
+      sports: 1,
+      sportsMeta: 1,
       academyId: 1,
       banners: 1,
       type: 1,
@@ -98,7 +99,7 @@ exports.getAllGrounds = async (query) => {
   const ids = (result.data || []).map((x) => x._id);
   const populated = await Ground.find({ _id: { $in: ids } })
     .populate({ path: "venueId", select: "name description image" })
-    .populate({ path: "sportId", select: "name description image" })
+    .populate({ path: "sports", select: "name description image" })
     .populate({ path: "academyId", select: "name description image" })
     .populate({
       path: "banners",

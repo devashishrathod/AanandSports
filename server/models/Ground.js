@@ -14,11 +14,13 @@ const groundSchema = new mongoose.Schema(
       ref: "Venue",
       required: true,
     },
-    sportId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Sport",
-      required: true,
-    },
+    sports: [{ type: mongoose.Schema.Types.ObjectId, ref: "Sport" }],
+    sportsMeta: [
+      {
+        sportId: { type: mongoose.Schema.Types.ObjectId, ref: "Sport" },
+        noOfCourts: { type: Number, default: 0 },
+      },
+    ],
     banners: [{ type: mongoose.Schema.Types.ObjectId, ref: "Banner" }],
     type: { type: String, required: true, trim: true },
     noOfCourts: { type: Number, default: 0 },

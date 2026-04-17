@@ -20,7 +20,8 @@
           "mode": "formdata",
           "formdata": [
             { "key": "venueId", "value": "", "type": "text" },
-            { "key": "sportId", "value": "", "type": "text" },
+            { "key": "sports", "value": "", "type": "text" },
+            { "key": "sports", "value": "", "type": "text" },
             { "key": "name", "value": "Ground 1", "type": "text" },
             { "key": "description", "value": "", "type": "text" },
             { "key": "type", "value": "cricket", "type": "text" },
@@ -98,6 +99,8 @@
           "formdata": [
             { "key": "name", "value": "Ground 1", "type": "text" },
             { "key": "description", "value": "", "type": "text" },
+            { "key": "sports", "value": "", "type": "text" },
+            { "key": "sports", "value": "", "type": "text" },
             { "key": "type", "value": "cricket", "type": "text" },
             { "key": "openingTime", "value": "06:00 AM", "type": "text" },
             { "key": "closingTime", "value": "11:00 PM", "type": "text" },

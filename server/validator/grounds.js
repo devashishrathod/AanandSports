@@ -13,17 +13,24 @@ exports.validateCreateGround = (payload) => {
       "any.required": "venueId is required",
       "any.invalid": "Invalid venueId format",
     }),
-    sportId: objectId().required().messages({
-      "any.required": "sportId is required",
+    sportId: objectId().optional().messages({
       "any.invalid": "Invalid sportId format",
     }),
+    sports: Joi.array()
+      .items(
+        objectId().messages({
+          "any.invalid": "Invalid sportId format",
+        }),
+      )
+      .min(1)
+      .optional(),
     type: Joi.string().min(2).max(50).required(),
     openingTime: Joi.string().required(),
     closingTime: Joi.string().required(),
     pricePerHour: Joi.number().min(0).required(),
     status: Joi.string().valid("available", "booked", "maintenance").optional(),
     isActive: Joi.boolean().optional(),
-  });
+  }).or("sportId", "sports");
 
   return createSchema.validate(payload, { abortEarly: false });
 };
@@ -38,6 +45,14 @@ exports.validateUpdateGround = (payload) => {
     sportId: objectId().optional().messages({
       "any.invalid": "Invalid sportId format",
     }),
+    sports: Joi.array()
+      .items(
+        objectId().messages({
+          "any.invalid": "Invalid sportId format",
+        }),
+      )
+      .min(1)
+      .optional(),
     type: Joi.string().min(2).max(50).optional(),
     openingTime: Joi.string().optional(),
     closingTime: Joi.string().optional(),

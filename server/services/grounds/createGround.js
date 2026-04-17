@@ -18,6 +18,7 @@ exports.createGround = async (payload, bannersFiles) => {
     description,
     venueId,
     sportId,
+    sports,
     type,
     openingTime,
     closingTime,
@@ -35,9 +36,15 @@ exports.createGround = async (payload, bannersFiles) => {
   const venue = await Venue.findById(venueId);
   if (!venue || venue.isDeleted) throwError(404, "Venue not found!");
 
-  validateObjectId(sportId, "Sport Id");
-  const sport = await Sport.findById(sportId);
-  if (!sport || sport.isDeleted) throwError(404, "Sport not found!");
+  const finalSports =
+    Array.isArray(sports) && sports.length ? sports : sportId ? [sportId] : [];
+  if (!finalSports.length) throwError(422, "Sport Id is required");
+
+  for (const sId of finalSports) {
+    validateObjectId(sId, "Sport Id");
+    const sport = await Sport.findById(sId);
+    if (!sport || sport.isDeleted) throwError(404, "Sport not found!");
+  }
 
   name = name?.toLowerCase();
   description = description?.toLowerCase();
@@ -45,7 +52,6 @@ exports.createGround = async (payload, bannersFiles) => {
   const existing = await Ground.findOne({
     academyId,
     venueId,
-    sportId,
     name,
     isDeleted: false,
   });
@@ -56,7 +62,11 @@ exports.createGround = async (payload, bannersFiles) => {
     description,
     academyId,
     venueId,
-    sportId,
+    sports: Array.from(new Set(finalSports.map(String))).map((x) => x),
+    sportsMeta: Array.from(new Set(finalSports.map(String))).map((sId) => ({
+      sportId: sId,
+      noOfCourts: 0,
+    })),
     type: type?.toLowerCase(),
     openingTime,
     closingTime,
@@ -87,7 +97,7 @@ exports.createGround = async (payload, bannersFiles) => {
 
   return await Ground.findById(ground._id)
     .populate({ path: "venueId", select: "name description image" })
-    .populate({ path: "sportId", select: "name description image" })
+    .populate({ path: "sports", select: "name description image" })
     .populate({ path: "academyId", select: "name description image" })
     .populate({
       path: "banners",

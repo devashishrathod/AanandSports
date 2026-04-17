@@ -9,6 +9,10 @@ exports.validateCreateCourt = (payload) => {
       "any.required": "groundId is required",
       "any.invalid": "Invalid groundId format",
     }),
+    sportId: objectId().required().messages({
+      "any.required": "sportId is required",
+      "any.invalid": "Invalid sportId format",
+    }),
     pricePerHour: Joi.number().min(0).optional(),
     status: Joi.string().valid("available", "booked", "maintenance").optional(),
     isActive: Joi.boolean().optional(),
@@ -23,6 +27,9 @@ exports.validateUpdateCourt = (payload) => {
     description: Joi.string().allow("").max(500).optional(),
     groundId: objectId().optional().messages({
       "any.invalid": "Invalid groundId format",
+    }),
+    sportId: objectId().optional().messages({
+      "any.invalid": "Invalid sportId format",
     }),
     pricePerHour: Joi.number().min(0).optional(),
     status: Joi.string().valid("available", "booked", "maintenance").optional(),
@@ -40,6 +47,9 @@ exports.validateGetAllCourtsQuery = (payload) => {
     name: Joi.string().optional(),
     groundId: objectId().optional().messages({
       "any.invalid": "Invalid groundId format",
+    }),
+    sportId: objectId().optional().messages({
+      "any.invalid": "Invalid sportId format",
     }),
     status: Joi.string().valid("available", "booked", "maintenance").optional(),
     isActive: Joi.alternatives().try(Joi.string(), Joi.boolean()).optional(),

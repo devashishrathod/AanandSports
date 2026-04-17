@@ -9,6 +9,11 @@ const courtSchema = new mongoose.Schema(
       ref: "Ground",
       required: true,
     },
+    sportId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Sport",
+      required: true,
+    },
     pricePerHour: { type: Number },
     status: {
       type: String,

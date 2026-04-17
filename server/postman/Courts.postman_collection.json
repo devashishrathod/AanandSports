@@ -18,7 +18,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"groundId\": \"{{groundId}}\",\n  \"name\": \"Court 1\",\n  \"description\": \"\",\n  \"pricePerHour\": 500,\n  \"status\": \"available\",\n  \"isActive\": true\n}"
+          "raw": "{\n  \"groundId\": \"{{groundId}}\",\n  \"sportId\": \"{{sportId}}\",\n  \"name\": \"Court 1\",\n  \"description\": \"\",\n  \"pricePerHour\": 500,\n  \"status\": \"available\",\n  \"isActive\": true\n}"
         },
         "url": {
           "raw": "{{Aanand-baseUrl}}/aanand-sports/courts/create",
@@ -39,13 +39,14 @@
           }
         ],
         "url": {
-          "raw": "{{Aanand-baseUrl}}/aanand-sports/courts/getAll?page=1&limit=10&groundId={{groundId}}&search=court&status=available",
+          "raw": "{{Aanand-baseUrl}}/aanand-sports/courts/getAll?page=1&limit=10&groundId={{groundId}}&sportId={{sportId}}&search=court&status=available",
           "host": ["{{Aanand-baseUrl}}"],
           "path": ["aanand-sports", "courts", "getAll"],
           "query": [
             { "key": "page", "value": "1" },
             { "key": "limit", "value": "10" },
             { "key": "groundId", "value": "{{groundId}}" },
+            { "key": "sportId", "value": "{{sportId}}" },
             { "key": "search", "value": "court" },
             { "key": "status", "value": "available" }
           ]
@@ -115,6 +116,7 @@
     { "key": "Aanand-baseUrl", "value": "http://localhost:8080" },
     { "key": "Aanand-adminToken", "value": "" },
     { "key": "groundId", "value": "" },
+    { "key": "sportId", "value": "" },
     { "key": "courtId", "value": "" }
   ]
 }

@@ -9,6 +9,7 @@ exports.getAllCourts = async (query) => {
     search,
     name,
     groundId,
+    sportId,
     status,
     isActive,
     fromDate,
@@ -25,6 +26,11 @@ exports.getAllCourts = async (query) => {
   if (groundId) {
     validateObjectId(groundId, "Ground Id");
     match.groundId = new mongoose.Types.ObjectId(groundId);
+  }
+
+  if (sportId) {
+    validateObjectId(sportId, "Sport Id");
+    match.sportId = new mongoose.Types.ObjectId(sportId);
   }
 
   if (status) match.status = status;
@@ -59,6 +65,7 @@ exports.getAllCourts = async (query) => {
       name: 1,
       description: 1,
       groundId: 1,
+      sportId: 1,
       pricePerHour: 1,
       status: 1,
       isActive: 1,
@@ -75,13 +82,15 @@ exports.getAllCourts = async (query) => {
 
   const ids = (result.data || []).map((x) => x._id);
   const populated = await Court.find({ _id: { $in: ids } })
+    .populate({ path: "sportId", select: "name description image" })
     .populate({
       path: "groundId",
       select:
         "name type noOfCourts openingTime closingTime pricePerHour status",
       populate: [
         { path: "venueId", select: "name description image" },
-        { path: "sportId", select: "name description image" },
+        { path: "sports", select: "name description image" },
+        { path: "academyId", select: "name description image" },
       ],
     })
     .select("-isDeleted");
