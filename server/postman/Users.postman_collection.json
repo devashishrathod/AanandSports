@@ -1,0 +1,109 @@
+{
+  "info": {
+    "_postman_id": "9c71c5f2-9f5c-43d3-b2fa-f7d70b85a0b2",
+    "name": "Aanand-Sports - Users",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get All Users",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-adminToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{Aanand-baseUrl}}/aanand-sports/users/getAll?page=1&limit=10&search=&role=user",
+          "host": ["{{Aanand-baseUrl}}"],
+          "path": ["aanand-sports", "users", "getAll"],
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "10" },
+            { "key": "search", "value": "" },
+            { "key": "role", "value": "user" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get User",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-adminToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{Aanand-baseUrl}}/aanand-sports/users/get?userId={{userId}}",
+          "host": ["{{Aanand-baseUrl}}"],
+          "path": ["aanand-sports", "users", "get"],
+          "query": [{ "key": "userId", "value": "{{userId}}" }]
+        }
+      }
+    },
+    {
+      "name": "Update User (Academy Manager fields)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-adminToken}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            { "key": "name", "value": "", "type": "text" },
+            { "key": "address", "value": "", "type": "text" },
+            { "key": "dob", "value": "", "type": "text" },
+            { "key": "email", "value": "", "type": "text" },
+            { "key": "mobile", "value": "", "type": "text" },
+            { "key": "academyName", "value": "", "type": "text" },
+            { "key": "description", "value": "", "type": "text" },
+            { "key": "openingTime", "value": "", "type": "text" },
+            { "key": "closingTime", "value": "", "type": "text" },
+            { "key": "image", "type": "file", "src": "" }
+          ]
+        },
+        "url": {
+          "raw": "{{Aanand-baseUrl}}/aanand-sports/users/update?userId={{userId}}",
+          "host": ["{{Aanand-baseUrl}}"],
+          "path": ["aanand-sports", "users", "update"],
+          "query": [{ "key": "userId", "value": "{{userId}}" }]
+        }
+      }
+    },
+    {
+      "name": "Delete User",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-adminToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{Aanand-baseUrl}}/aanand-sports/users/delete/{{userId}}",
+          "host": ["{{Aanand-baseUrl}}"],
+          "path": ["aanand-sports", "users", "delete", "{{userId}}"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "Aanand-baseUrl", "value": "http://localhost:8080" },
+    { "key": "Aanand-adminToken", "value": "" },
+    { "key": "userId", "value": "" }
+  ]
+}

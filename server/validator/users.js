@@ -1,4 +1,5 @@
 const Joi = require("joi");
+const objectId = require("./validJoiObjectId");
 
 exports.validateUpdateUser = (data) => {
   const schema = Joi.object({
@@ -21,6 +22,33 @@ exports.validateUpdateUser = (data) => {
       "number.min": "Mobile number must be 10 digits",
       "number.max": "Mobile number must be 10 digits",
     }),
+
+    academyName: Joi.string().min(2).max(120).optional(),
+    description: Joi.string().allow("").max(500).optional(),
+    openingTime: Joi.string().allow("").max(50).optional(),
+    closingTime: Joi.string().allow("").max(50).optional(),
   });
   return schema.validate(data, { abortEarly: false });
+};
+
+exports.validateGetAllUsersQuery = (payload) => {
+  const schema = Joi.object({
+    page: Joi.number().integer().min(1).optional(),
+    limit: Joi.number().integer().min(1).optional(),
+    search: Joi.string().optional(),
+    name: Joi.string().optional(),
+    email: Joi.string().optional(),
+    mobile: Joi.string().optional(),
+    address: Joi.string().optional(),
+    role: Joi.string().optional(),
+    academyId: objectId().messages({
+      "any.invalid": "Invalid AcademyId format",
+    }),
+    isActive: Joi.alternatives().try(Joi.string(), Joi.boolean()).optional(),
+    fromDate: Joi.date().iso().optional(),
+    toDate: Joi.date().iso().optional(),
+    sortBy: Joi.string().optional(),
+    sortOrder: Joi.string().valid("asc", "desc").optional(),
+  });
+  return schema.validate(payload, { abortEarly: false });
 };

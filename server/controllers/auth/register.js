@@ -1,6 +1,7 @@
 const User = require("../../models/User");
 const Academy = require("../../models/Academy");
 const { ROLES, LOGIN_TYPES } = require("../../constants");
+const { uploadImage } = require("../../services/uploads");
 const { asyncWrapper, sendSuccess, throwError } = require("../../utils");
 
 exports.register = asyncWrapper(async (req, res) => {
@@ -17,6 +18,7 @@ exports.register = asyncWrapper(async (req, res) => {
     openingTime,
     closingTime,
   } = req.body;
+  const image = req.files?.image;
   if (!mobile && !email) {
     throwError(422, "Email or Mobile number any one of this is required");
   }
@@ -33,12 +35,15 @@ exports.register = asyncWrapper(async (req, res) => {
     user = await User.findOne({ mobile, role, isDeleted: false });
     if (user) throwError(400, "User with mobile number already exists");
   }
+  let imageUrl = null;
+  if (image) imageUrl = await uploadImage(image.tempFilePath);
   const userData = {
     name,
     password,
     email,
     mobile,
     role,
+    image: imageUrl,
     fcmToken,
     loginType,
     isLoggedIn: true,
@@ -54,6 +59,7 @@ exports.register = asyncWrapper(async (req, res) => {
       description,
       email,
       mobile,
+      image: imageUrl,
       openingTime,
       closingTime,
     });
