@@ -24,7 +24,7 @@ exports.getAllCourtBookings = async (query, tokenUserId) => {
 
   const match = {};
 
-  if (user.role !== ROLES.ADMIN || user.role !== "academy_manager"){
+  if (user.role !== ROLES.ADMIN && user.role !== "academy_manager"){
     match.userId = new mongoose.Types.ObjectId(tokenUserId);
   }
 
