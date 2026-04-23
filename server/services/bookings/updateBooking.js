@@ -13,14 +13,14 @@ exports.updateBooking = async (id, payload = 0, authUserId) => {
   if (!booking) throwError(404, "Booking not found");
 
   const isAdmin = user?.role === ROLES.ADMIN;
-  if (!isAdmin) {
-    if (String(booking.userId) !== String(user._id)) {
-      throwError(
-        403,
-        "Forbidden! You are not authorized to update this booking",
-      );
-    }
-  }
+  //if (!isAdmin) {
+   // if (String(booking.userId) !== String(user._id)) {
+    //  throwError(
+     //   403,
+    //    "Forbidden! You are not authorized to update this booking",
+  //  )  );
+  // }
+//  }
 
   if (payload) {
     let { userId, sportGroundId, price, status, paymentStatus, paymentId } =
