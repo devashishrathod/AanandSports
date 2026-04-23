@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const User = require("../../models/User");
+const Academy = require("../../models/Academy");
 const Court = require("../../models/Court");
 const CourtSlot = require("../../models/CourtSlot");
 const CourtBooking = require("../../models/CourtBooking");
@@ -52,6 +53,9 @@ exports.createCourtBooking = async (tokenUserId, payload) => {
 
       const ground = await getGroundOrThrow(court.groundId);
 
+      const academy = await Academy.findById(ground.academyId);
+      if (!academy || academy.isDeleted) throwError(404, "Academy not found");
+
       assertSportLinkedToGround(ground, court.sportId);
 
       const { durationMs, requiredHours, durationHours } = await getSlotConfig(
@@ -71,6 +75,7 @@ exports.createCourtBooking = async (tokenUserId, payload) => {
       totalPrice += price;
 
       bookingItems.push({
+        academyId: academy._id,
         groundId: court.groundId,
         courtId: court._id,
         sportId: court.sportId,
@@ -128,6 +133,7 @@ exports.createCourtBooking = async (tokenUserId, payload) => {
 
     const populated = await CourtBooking.findById(createdBooking._id)
       .populate({ path: "userId", select: "name email mobile role" })
+      .populate({ path: "items.academyId" })
       .populate({ path: "items.groundId" })
       .populate({ path: "items.courtId" })
       .populate({ path: "items.sportId", select: "name description image" });

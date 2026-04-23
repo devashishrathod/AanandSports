@@ -7,6 +7,11 @@ const bookingSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    academyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Academy",
+      required: true,
+    },
     sportGroundId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "SportGround",

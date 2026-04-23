@@ -41,6 +41,9 @@ exports.validateGetAllBookingsQuery = (payload) => {
     userId: objectId().optional().messages({
       "any.invalid": "Invalid userId format",
     }),
+    academyId: objectId().optional().messages({
+      "any.invalid": "Invalid academyId format",
+    }),
     sportGroundId: objectId().optional().messages({
       "any.invalid": "Invalid sportGroundId format",
     }),

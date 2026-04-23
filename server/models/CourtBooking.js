@@ -3,6 +3,11 @@ const mongoose = require("mongoose");
 const bookingItemSchema = new mongoose.Schema(
   {
     _id: false,
+    academyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Academy",
+      required: true,
+    },
     groundId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Ground",

@@ -11,6 +11,11 @@ exports.getAllCourtBookings = async (query, tokenUserId) => {
   let {
     page,
     limit,
+    userId,
+    academyId,
+    groundId,
+    courtId,
+    sportId,
     status,
     paymentStatus,
     fromDate,
@@ -24,8 +29,31 @@ exports.getAllCourtBookings = async (query, tokenUserId) => {
 
   const match = {};
 
-  if (user.role !== ROLES.ADMIN && user.role !== "academy_manager"){
+  const isAdmin = user.role === ROLES.ADMIN;
+  const isAcademyManager = user.role === ROLES.ACADEMY_MANAGER;
+
+  if (!isAdmin && !isAcademyManager) {
     match.userId = new mongoose.Types.ObjectId(tokenUserId);
+  } else if (isAcademyManager) {
+    match["items.academyId"] = new mongoose.Types.ObjectId(user.academyId);
+  } else if (userId) {
+    match.userId = new mongoose.Types.ObjectId(userId);
+  }
+
+  if (academyId) {
+    match["items.academyId"] = new mongoose.Types.ObjectId(academyId);
+  }
+
+  if (groundId) {
+    match["items.groundId"] = new mongoose.Types.ObjectId(groundId);
+  }
+
+  if (courtId) {
+    match["items.courtId"] = new mongoose.Types.ObjectId(courtId);
+  }
+
+  if (sportId) {
+    match["items.sportId"] = new mongoose.Types.ObjectId(sportId);
   }
 
   if (status) match.status = status;
@@ -51,6 +79,7 @@ exports.getAllCourtBookings = async (query, tokenUserId) => {
 
   await CourtBooking.populate(result.data, [
     { path: "userId", select: "name email mobile role" },
+    { path: "items.academyId" },
     { path: "items.groundId" },
     { path: "items.courtId" },
     { path: "items.sportId", select: "name description image" },

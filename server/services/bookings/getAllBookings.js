@@ -10,6 +10,7 @@ exports.getAllBookings = async (query, tokenUserId) => {
   let {
     page,
     limit,
+    academyId,
     userId,
     sportGroundId,
     status,
@@ -30,12 +31,20 @@ exports.getAllBookings = async (query, tokenUserId) => {
 
   const match = {};
 
-  // Non-admin can only view own
-  if (user.role !== ROLES.ADMIN && user.role !== "academy_manager") {
+  const isAdmin = user.role === ROLES.ADMIN;
+  const isAcademyManager = user.role === ROLES.ACADEMY_MANAGER;
+  if (!isAdmin && !isAcademyManager) {
     match.userId = new mongoose.Types.ObjectId(tokenUserId);
+  } else if (isAcademyManager) {
+    match.academyId = new mongoose.Types.ObjectId(user.academyId);
   } else if (userId) {
     validateObjectId(userId, "User Id");
     match.userId = new mongoose.Types.ObjectId(userId);
+  }
+
+  if (academyId) {
+    validateObjectId(academyId, "Academy Id");
+    match.academyId = new mongoose.Types.ObjectId(academyId);
   }
 
   if (sportGroundId) {
@@ -84,6 +93,7 @@ exports.getAllBookings = async (query, tokenUserId) => {
   const result = await pagination(Booking, pipeline, page, limit);
   await Booking.populate(result.data, [
     { path: "userId", select: "name email mobile role" },
+    { path: "academyId" },
     {
       path: "sportGroundId",
       select:

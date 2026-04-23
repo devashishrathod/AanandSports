@@ -38,6 +38,21 @@ exports.validateGetAllCourtBookingsQuery = (payload) => {
   const schema = Joi.object({
     page: Joi.number().integer().min(1).optional(),
     limit: Joi.number().integer().min(1).optional(),
+    userId: objectId().optional().messages({
+      "any.invalid": "Invalid userId format",
+    }),
+    academyId: objectId().optional().messages({
+      "any.invalid": "Invalid academyId format",
+    }),
+    groundId: objectId().optional().messages({
+      "any.invalid": "Invalid groundId format",
+    }),
+    courtId: objectId().optional().messages({
+      "any.invalid": "Invalid courtId format",
+    }),
+    sportId: objectId().optional().messages({
+      "any.invalid": "Invalid sportId format",
+    }),
     status: Joi.string().valid("pending", "confirmed", "cancelled").optional(),
     paymentStatus: Joi.string().valid("pending", "paid", "failed").optional(),
     fromDate: Joi.date().iso().optional(),

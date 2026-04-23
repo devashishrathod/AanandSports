@@ -1,4 +1,5 @@
 const Booking = require("../../models/Booking");
+const Academy = require("../../models/Academy");
 const SportGround = require("../../models/SportGround");
 const User = require("../../models/User");
 const { throwError, validateObjectId } = require("../../utils");
@@ -16,6 +17,9 @@ exports.createBooking = async (tokenUserId, payload) => {
   const sportGround = await SportGround.findById(sportGroundId);
   if (!sportGround || sportGround.isDeleted)
     throwError(404, "Sport ground not found");
+
+  const academy = await Academy.findById(sportGround.academyId);
+  if (!academy || academy.isDeleted) throwError(404, "Academy not found");
 
   let finalUserId;
   if (user.role === ROLES.ADMIN && userId) {
@@ -52,6 +56,7 @@ exports.createBooking = async (tokenUserId, payload) => {
 
   const created = await Booking.create({
     userId: finalUserId,
+    academyId: academy._id,
     sportGroundId,
     startTime,
     endTime,
@@ -63,6 +68,7 @@ exports.createBooking = async (tokenUserId, payload) => {
 
   return await Booking.findById(created._id)
     .populate({ path: "userId", select: "name email mobile role" })
+    .populate({ path: "academyId" })
     .populate({
       path: "sportGroundId",
       select:
