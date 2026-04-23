@@ -27,6 +27,7 @@ const academySchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    banners: [{ type: mongoose.Schema.Types.ObjectId, ref: "Banner" }],
     openingTime: { type: String },
     closingTime: { type: String },
     image: { type: String },

@@ -8,7 +8,10 @@ const bannerSchema = new mongoose.Schema(
     groundId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Ground",
-      required: true,
+    },
+    academyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Academy",
     },
     image: { type: String, default: DEFAULT_IMAGES.BANNER },
     video: { type: String },
