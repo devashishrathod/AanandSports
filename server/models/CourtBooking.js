@@ -27,6 +27,8 @@ const bookingItemSchema = new mongoose.Schema(
     endTime: { type: Date, required: true },
     slotStarts: { type: [Date], default: [] },
     price: { type: Number, default: 0 },
+    academyAmount: { type: Number, default: 0 },
+    platformAmount: { type: Number, default: 0 },
   },
   { versionKey: false },
 );
@@ -41,6 +43,8 @@ const courtBookingSchema = new mongoose.Schema(
     },
     items: { type: [bookingItemSchema], default: [] },
     totalPrice: { type: Number, default: 0 },
+    academyAmount: { type: Number, default: 0 },
+    platformAmount: { type: Number, default: 0 },
     status: {
       type: String,
       enum: ["pending", "confirmed", "cancelled"],
@@ -54,6 +58,7 @@ const courtBookingSchema = new mongoose.Schema(
       index: true,
     },
     paymentId: { type: String, default: "" },
+    razorpayOrderId: { type: String, default: "" },
     cancelledAt: { type: Date, default: null },
   },
   { timestamps: true, versionKey: false },

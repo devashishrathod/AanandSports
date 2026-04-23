@@ -20,6 +20,8 @@ const bookingSchema = new mongoose.Schema(
     startTime: { type: Date, required: true },
     endTime: { type: Date, required: true },
     price: { type: Number },
+    academyAmount: { type: Number, default: 0 },
+    platformAmount: { type: Number, default: 0 },
     status: {
       type: String,
       enum: ["pending", "confirmed", "cancelled"],
@@ -31,6 +33,7 @@ const bookingSchema = new mongoose.Schema(
       default: "pending",
     },
     paymentId: { type: String },
+    razorpayOrderId: { type: String, default: "" },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
   },

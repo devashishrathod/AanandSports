@@ -67,7 +67,62 @@
         "url": {
           "raw": "{{Aanand-baseUrl}}/aanand-sports/courtBookings/get/{{courtBookingId}}",
           "host": ["{{Aanand-baseUrl}}"],
-          "path": ["aanand-sports", "courtBookings", "get", "{{courtBookingId}}"]
+          "path": [
+            "aanand-sports",
+            "courtBookings",
+            "get",
+            "{{courtBookingId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Initiate CourtBooking Payment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-adminToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{Aanand-baseUrl}}/aanand-sports/courtBookings/initiate-payment/{{courtBookingId}}",
+          "host": ["{{Aanand-baseUrl}}"],
+          "path": [
+            "aanand-sports",
+            "courtBookings",
+            "initiate-payment",
+            "{{courtBookingId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Verify CourtBooking Payment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-adminToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"razorpay_order_id\": \"{{razorpay_order_id}}\",\n  \"razorpay_payment_id\": \"{{razorpay_payment_id}}\",\n  \"razorpay_signature\": \"{{razorpay_signature}}\"\n}"
+        },
+        "url": {
+          "raw": "{{Aanand-baseUrl}}/aanand-sports/courtBookings/verify-payment",
+          "host": ["{{Aanand-baseUrl}}"],
+          "path": ["aanand-sports", "courtBookings", "verify-payment"]
         }
       }
     },
@@ -94,7 +149,12 @@
         "url": {
           "raw": "{{Aanand-baseUrl}}/aanand-sports/courtBookings/update/{{courtBookingId}}",
           "host": ["{{Aanand-baseUrl}}"],
-          "path": ["aanand-sports", "courtBookings", "update", "{{courtBookingId}}"]
+          "path": [
+            "aanand-sports",
+            "courtBookings",
+            "update",
+            "{{courtBookingId}}"
+          ]
         }
       }
     },
@@ -112,7 +172,12 @@
         "url": {
           "raw": "{{Aanand-baseUrl}}/aanand-sports/courtBookings/cancel/{{courtBookingId}}",
           "host": ["{{Aanand-baseUrl}}"],
-          "path": ["aanand-sports", "courtBookings", "cancel", "{{courtBookingId}}"]
+          "path": [
+            "aanand-sports",
+            "courtBookings",
+            "cancel",
+            "{{courtBookingId}}"
+          ]
         }
       }
     }
@@ -123,6 +188,9 @@
     { "key": "courtId", "value": "" },
     { "key": "courtBookingId", "value": "" },
     { "key": "startTime", "value": "2026-04-19T06:00:00.000Z" },
-    { "key": "startTime2", "value": "2026-04-19T07:00:00.000Z" }
+    { "key": "startTime2", "value": "2026-04-19T07:00:00.000Z" },
+    { "key": "razorpay_order_id", "value": "" },
+    { "key": "razorpay_payment_id", "value": "" },
+    { "key": "razorpay_signature", "value": "" }
   ]
 }

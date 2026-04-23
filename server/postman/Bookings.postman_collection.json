@@ -123,6 +123,56 @@
       }
     },
     {
+      "name": "Initiate Booking Payment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-adminToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{Aanand-baseUrl}}/aanand-sports/bookings/initiate-payment/{{bookingId}}",
+          "host": ["{{Aanand-baseUrl}}"],
+          "path": [
+            "aanand-sports",
+            "bookings",
+            "initiate-payment",
+            "{{bookingId}}"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Verify Booking Payment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-adminToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"razorpay_order_id\": \"{{razorpay_order_id}}\",\n  \"razorpay_payment_id\": \"{{razorpay_payment_id}}\",\n  \"razorpay_signature\": \"{{razorpay_signature}}\"\n}"
+        },
+        "url": {
+          "raw": "{{Aanand-baseUrl}}/aanand-sports/bookings/verify-payment",
+          "host": ["{{Aanand-baseUrl}}"],
+          "path": ["aanand-sports", "bookings", "verify-payment"]
+        }
+      }
+    },
+    {
       "name": "Update Booking",
       "request": {
         "method": "PUT",
@@ -172,6 +222,9 @@
   "variable": [
     { "key": "Aanand-baseUrl", "value": "http://localhost:8080" },
     { "key": "Aanand-adminToken", "value": "" },
-    { "key": "bookingId", "value": "" }
+    { "key": "bookingId", "value": "" },
+    { "key": "razorpay_order_id", "value": "" },
+    { "key": "razorpay_payment_id", "value": "" },
+    { "key": "razorpay_signature", "value": "" }
   ]
 }
