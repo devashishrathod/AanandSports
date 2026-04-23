@@ -31,7 +31,7 @@ exports.getAllBookings = async (query, tokenUserId) => {
   const match = {};
 
   // Non-admin can only view own
-  if (user.role !== ROLES.ADMIN || user.role !== "academy_manager") {
+  if (user.role !== ROLES.ADMIN && user.role !== "academy_manager") {
     match.userId = new mongoose.Types.ObjectId(tokenUserId);
   } else if (userId) {
     validateObjectId(userId, "User Id");
