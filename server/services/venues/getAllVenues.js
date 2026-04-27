@@ -30,7 +30,7 @@ exports.getAllVenues = async (userId, query) => {
   }
   const isAcademyManager = user?.role === ROLES.ACADEMY_MANAGER;
   if (isAcademyManager) {
-    match.academyId = new mongoose.Types.ObjectId(academyId);
+    match.academyId = new mongoose.Types.ObjectId(user.academyId);
   } else if (academyId) {
     validateObjectId(academyId, "Academy Id");
     match.academyId = new mongoose.Types.ObjectId(academyId);
