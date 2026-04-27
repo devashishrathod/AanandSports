@@ -1,13 +1,15 @@
 const mongoose = require("mongoose");
+const User = require("../../models/User");
 const Venue = require("../../models/Venue");
 const { pagination, validateObjectId } = require("../../utils");
 
-exports.getAllVenues = async (query) => {
+exports.getAllVenues = async (userId, query) => {
   let {
     page,
     limit,
     search,
     name,
+    academyId,
     locationId,
     isActive,
     fromDate,
@@ -20,6 +22,18 @@ exports.getAllVenues = async (query) => {
   limit = limit ? Number(limit) : 10;
 
   const match = { isDeleted: false };
+
+  const user = await User.findById(userId);
+  if (!user || user.isDeleted) {
+    throwError(404, "Unauthorized user! User not found");
+  }
+  const isAcademyManager = user?.role === ROLES.ACADEMY_MANAGER;
+  if (isAcademyManager) {
+    match.academyId = new mongoose.Types.ObjectId(academyId);
+  } else if (academyId) {
+    validateObjectId(academyId, "Academy Id");
+    match.academyId = new mongoose.Types.ObjectId(academyId);
+  }
 
   if (locationId) {
     validateObjectId(locationId, "Location Id");
@@ -54,6 +68,7 @@ exports.getAllVenues = async (query) => {
   pipeline.push({
     $project: {
       locationId: 1,
+      academyId: 1,
       name: 1,
       description: 1,
       image: 1,

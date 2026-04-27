@@ -5,6 +5,10 @@ const { locationField } = require("./validObjectId");
 const venueSchema = new mongoose.Schema(
   {
     locationId: { ...locationField, required: true },
+    academyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Academy",
+    },
     name: { type: String, required: true, trim: true },
     description: { type: String, trim: true },
     image: { type: String, default: DEFAULT_IMAGES.VENUE },

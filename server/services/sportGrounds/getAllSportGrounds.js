@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
+const User = require("../../models/User");
 const SportGround = require("../../models/SportGround");
+const { ROLES } = require("../../constants");
 const {
   pagination,
   validateObjectId,
@@ -9,7 +11,7 @@ const {
   parseTimeToMinutes,
 } = require("../../utils");
 
-exports.getAllSportGrounds = async (query) => {
+exports.getAllSportGrounds = async (userId, query) => {
   let {
     page,
     limit,
@@ -50,10 +52,18 @@ exports.getAllSportGrounds = async (query) => {
 
   const match = { isDeleted: false };
 
-  if (academyId) {
+  const user = await User.findById(userId);
+  if (!user || user.isDeleted) {
+    throwError(404, "Unauthorized user! User not found");
+  }
+  const isAcademyManager = user?.role === ROLES.ACADEMY_MANAGER;
+  if (isAcademyManager) {
+    match.academyId = new mongoose.Types.ObjectId(user.academyId);
+  } else if (academyId) {
     validateObjectId(academyId, "Academy Id");
     match.academyId = new mongoose.Types.ObjectId(academyId);
   }
+
   if (venueId) {
     validateObjectId(venueId, "Venue Id");
     match.venueId = new mongoose.Types.ObjectId(venueId);

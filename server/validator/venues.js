@@ -7,6 +7,9 @@ exports.validateCreateVenue = (data) => {
       "any.required": "locationId is required",
       "any.invalid": "Invalid locationId format",
     }),
+    academyId: objectId()
+      .optional()
+      .message({ "any.invalid": "Invalid locationId format" }),
     name: Joi.string().min(3).max(120).required().messages({
       "string.min": "Name has minimum {#limit} characters",
       "string.max": "Name cannot exceed {#limit} characters",
