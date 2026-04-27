@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const User = require("../../models/User");
 const Venue = require("../../models/Venue");
 const { pagination, validateObjectId } = require("../../utils");
+const { ROLES } = require("../../constants");
 
 exports.getAllVenues = async (userId, query) => {
   let {
