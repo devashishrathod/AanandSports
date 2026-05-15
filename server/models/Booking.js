@@ -17,6 +17,12 @@ const bookingSchema = new mongoose.Schema(
       ref: "SportGround",
       required: true,
     },
+    timeSlotId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "TimeSlot",
+      required: true,
+      index: true,
+    },
     startTime: { type: Date, required: true },
     endTime: { type: Date, required: true },
     price: { type: Number },
@@ -38,6 +44,11 @@ const bookingSchema = new mongoose.Schema(
     updatedAt: { type: Date, default: Date.now },
   },
   { timestamps: true, versionKey: false },
+);
+
+bookingSchema.index(
+  { timeSlotId: 1, status: 1 },
+  { partialFilterExpression: { status: { $ne: "cancelled" } } },
 );
 
 module.exports = mongoose.model("Booking", bookingSchema);

@@ -1,4 +1,6 @@
 const Booking = require("../../models/Booking");
+const TimeSlot = require("../../models/TimeSlot");
+const SportGround = require("../../models/SportGround");
 const { throwError, validateObjectId } = require("../../utils");
 const { ROLES } = require("../../constants");
 
@@ -11,6 +13,19 @@ exports.deleteBooking = async (id, authUser) => {
   if (!isAdmin) {
     if (String(booking.userId) !== String(authUser?._id)) {
       throwError(403, "Forbidden");
+    }
+  }
+
+  const timeSlot = await TimeSlot.findById(booking.timeSlotId);
+  if (timeSlot && !timeSlot.isDeleted && timeSlot.noOfPlayers > 0) {
+    const sportGround = await SportGround.findById(booking.sportGroundId);
+    if (sportGround) {
+      await TimeSlot.findByIdAndUpdate(booking.timeSlotId, {
+        $inc: { noOfPlayers: -1 },
+        $set: {
+          isFull: timeSlot.noOfPlayers - 1 < sportGround.maxPlayers,
+        },
+      });
     }
   }
 

@@ -1,0 +1,203 @@
+{
+  "info": {
+    "_postman_id": "e2f1c9d7-4a2b-4c3d-9e8f-7a6b5c4d3e2f",
+    "name": "Aanand-Sports - SportGround TimeSlots",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create TimeSlot Range (bulk)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-adminToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sportGroundId\": \"{{sportGroundId}}\",\n  \"startDate\": \"2026-05-12\",\n  \"endDate\": \"2026-05-14\",\n  \"timeSlots\": [\n    { \"startTime\": \"09:00 AM\", \"endTime\": \"11:00 AM\" },\n    { \"startTime\": \"02:00 PM\", \"endTime\": \"04:00 PM\" }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sportGroundTimeSlots/createRange",
+          "host": ["{{baseUrl}}"],
+          "path": ["sportGroundTimeSlots", "createRange"]
+        }
+      }
+    },
+    {
+      "name": "Get All TimeSlots for SportGround (with date filter)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-userToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/sportGroundTimeSlots/getAll?sportGroundId={{sportGroundId}}&fromDate=2026-05-12&toDate=2026-05-14&isActive=true&isAvailable=true&page=1&limit=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["sportGroundTimeSlots", "getAll"],
+          "query": [
+            {
+              "key": "sportGroundId",
+              "value": "{{sportGroundId}}"
+            },
+            {
+              "key": "fromDate",
+              "value": "2026-05-12"
+            },
+            {
+              "key": "toDate",
+              "value": "2026-05-14"
+            },
+            {
+              "key": "isActive",
+              "value": "true"
+            },
+            {
+              "key": "isAvailable",
+              "value": "true"
+            },
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get All TimeSlots by single date (sportDate filter)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-userToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/sportGroundTimeSlots/getAll?sportDate=2026-05-13&page=1&limit=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["sportGroundTimeSlots", "getAll"],
+          "query": [
+            {
+              "key": "sportDate",
+              "value": "2026-05-13"
+            },
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get All TimeSlots by single date + sportGround",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-userToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/sportGroundTimeSlots/getAll?sportGroundId={{sportGroundId}}&sportDate=2026-05-13&page=1&limit=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["sportGroundTimeSlots", "getAll"],
+          "query": [
+            {
+              "key": "sportGroundId",
+              "value": "{{sportGroundId}}"
+            },
+            {
+              "key": "sportDate",
+              "value": "2026-05-13"
+            },
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Update TimeSlot (admin only)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-adminToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"isAvailable\": false,\n  \"isFull\": true\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/sportGroundTimeSlots/update/{{timeSlotId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["sportGroundTimeSlots", "update", "{{timeSlotId}}"]
+        }
+      }
+    },
+    {
+      "name": "Delete TimeSlot (admin only)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-adminToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/sportGroundTimeSlots/delete/{{timeSlotId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["sportGroundTimeSlots", "delete", "{{timeSlotId}}"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000"
+    }
+  ]
+}

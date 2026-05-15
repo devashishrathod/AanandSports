@@ -6,9 +6,9 @@ exports.validateCreateBooking = (data) => {
     userId: objectId().optional().messages({
       "any.invalid": "Invalid userId format",
     }),
-    sportGroundId: objectId().required().messages({
-      "any.required": "sportGroundId is required",
-      "any.invalid": "Invalid sportGroundId format",
+    timeSlotId: objectId().required().messages({
+      "any.required": "timeSlotId is required",
+      "any.invalid": "Invalid timeSlotId format",
     }),
     // price: Joi.number().min(0).optional(),
     // status: Joi.string().valid("pending", "confirmed", "cancelled").optional(),
@@ -23,8 +23,8 @@ exports.validateUpdateBooking = (data) => {
     userId: objectId().optional().messages({
       "any.invalid": "Invalid userId format",
     }),
-    sportGroundId: objectId().optional().messages({
-      "any.invalid": "Invalid sportGroundId format",
+    timeSlotId: objectId().optional().messages({
+      "any.invalid": "Invalid timeSlotId format",
     }),
     // price: Joi.number().min(0).optional(),
     // status: Joi.string().valid("pending", "confirmed", "cancelled").optional(),

@@ -8,11 +8,11 @@ const sportGroundSchema = new mongoose.Schema(
       ref: "Academy",
       required: true,
     },
-    venueId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Venue",
-      required: true,
-    },
+    // venueId: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "Venue",
+    //   required: true,
+    // },
     sportId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Sport",
@@ -26,16 +26,16 @@ const sportGroundSchema = new mongoose.Schema(
     name: { type: String, required: true, trim: true },
     description: { type: String, trim: true },
     coach: { type: String, trim: true },
-    openingTime: { type: String },
-    closingTime: { type: String },
+    // openingTime: { type: String },
+    // closingTime: { type: String },
     level: {
       type: String,
       enum: Object.values(SPORT_GROUND_LEVELS),
       default: SPORT_GROUND_LEVELS.NULL,
     },
-    sportDurationInHours: { type: Number, required: true },
-    sportDate: { type: Date, required: true },
-    sportTiming: { type: Date, required: true },
+    // sportDurationInHours: { type: Number, required: true },
+    // sportDate: { type: Date, required: true },
+    // sportTiming: { type: Date, required: true },
     maxPlayers: { type: Number, required: true },
     minPlayers: { type: Number, default: 1 },
     maxTeams: { type: Number },
@@ -52,19 +52,14 @@ const sportGroundSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     // discount: { type: Number },
     // discountType: { type: String, enum: ["percentage", "fixed"] },
-    isPrivate: { type: Boolean, default: false },
+    // isPrivate: { type: Boolean, default: false },
     isAvailable: { type: Boolean, default: true },
-    isFull: { type: Boolean, default: false },
+    // isFull: { type: Boolean, default: false },
     image: { type: String, default: DEFAULT_IMAGES.SPORT_GROUND },
     isActive: { type: Boolean, default: true },
     isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true, versionKey: false },
 );
-
-// sportGroundSchema.index(
-//   { venueId: 1, name: 1 },
-//   { unique: true, partialFilterExpression: { isDeleted: false } },
-// );
 
 module.exports = mongoose.model("SportGround", sportGroundSchema);

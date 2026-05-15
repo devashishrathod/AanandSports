@@ -95,11 +95,14 @@ exports.getAllBookings = async (query, tokenUserId) => {
     { path: "userId", select: "name email mobile role" },
     { path: "academyId" },
     {
-      path: "sportGroundId",
+      path: "timeSlotId",
       select:
-        "name sportDate sportDurationInHours sportTiming venueId sportId categoryId",
+        "sportGroundId startDateTime endDateTime sportDurationInHours noOfPlayers isAvailable isFull isActive",
+    },
+    {
+      path: "sportGroundId",
+      select: "name sportId categoryId",
       populate: [
-        { path: "venueId", select: "name description image" },
         { path: "sportId", select: "name description image" },
         { path: "categoryId", select: "name description image" },
       ],

@@ -1,0 +1,196 @@
+{
+  "info": {
+    "_postman_id": "b9e2d5f-8c31-4b6f-9ab4-0d6d2b9a7a11",
+    "name": "Aanand-Sports - Bookings (updated for timeSlotId)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Booking (user)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-userToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"timeSlotId\": \"{{timeSlotId}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/bookings/create",
+          "host": ["{{baseUrl}}"],
+          "path": ["bookings", "create"]
+        }
+      }
+    },
+    {
+      "name": "Create Booking (admin for user)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-adminToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"timeSlotId\": \"{{timeSlotId}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/bookings/create",
+          "host": ["{{baseUrl}}"],
+          "path": ["bookings", "create"]
+        }
+      }
+    },
+    {
+      "name": "Get All Bookings (user)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-userToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/bookings/getAll?page=1&limit=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["bookings", "getAll"],
+          "query": [
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get All Bookings (admin with filters)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-adminToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/bookings/getAll?status=pending&paymentStatus=pending&page=1&limit=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["bookings", "getAll"],
+          "query": [
+            {
+              "key": "status",
+              "value": "pending"
+            },
+            {
+              "key": "paymentStatus",
+              "value": "pending"
+            },
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "limit",
+              "value": "10"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Update Booking (admin only)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-adminToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"timeSlotId\": \"{{newTimeSlotId}}\",\n  \"status\": \"confirmed\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/bookings/update/{{bookingId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["bookings", "update", "{{bookingId}}"]
+        }
+      }
+    },
+    {
+      "name": "Get Booking by ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-userToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/bookings/get/{{bookingId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["bookings", "get", "{{bookingId}}"]
+        }
+      }
+    },
+    {
+      "name": "Delete/Cancel Booking (user)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "{{Aanand-userToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/bookings/delete/{{bookingId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["bookings", "delete", "{{bookingId}}"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 const Booking = require("../../models/Booking");
 const Academy = require("../../models/Academy");
 const SportGround = require("../../models/SportGround");
+const TimeSlot = require("../../models/TimeSlot");
 const User = require("../../models/User");
 const { throwError, validateObjectId } = require("../../utils");
 const { ROLES } = require("../../constants");
@@ -10,14 +11,18 @@ exports.createBooking = async (tokenUserId, payload) => {
   if (!user || user.isDeleted) {
     throwError(404, "User not found");
   }
-  let { userId, sportGroundId } = payload;
+  let { userId, timeSlotId } = payload;
 
-  validateObjectId(sportGroundId, "SportGround Id");
-  const sportGround = await SportGround.findById(sportGroundId);
+  validateObjectId(timeSlotId, "TimeSlot Id");
+  const timeSlot = await TimeSlot.findById(timeSlotId);
+  if (!timeSlot || timeSlot.isDeleted) throwError(404, "Time slot not found");
+
+  validateObjectId(timeSlot.sportGroundId, "SportGround Id");
+  const sportGround = await SportGround.findById(timeSlot.sportGroundId);
   if (!sportGround || sportGround.isDeleted)
     throwError(404, "Sport ground not found");
 
-  const academy = await Academy.findById(sportGround.academyId);
+  const academy = await Academy.findById(timeSlot.academyId);
   if (!academy || academy.isDeleted) throwError(404, "Academy not found");
 
   let finalUserId;
@@ -34,43 +39,65 @@ exports.createBooking = async (tokenUserId, payload) => {
   }
   if (!finalUserId) throwError(401, "Access denied");
 
-  const startTime = new Date(sportGround.sportDate);
+  const startTime = new Date(timeSlot.startDateTime);
+  const endTime = new Date(timeSlot.endDateTime);
   if (isNaN(startTime.getTime()))
-    throwError(422, "Invalid sport ground sportDate");
+    throwError(422, "Invalid time slot startDateTime");
+  if (isNaN(endTime.getTime()))
+    throwError(422, "Invalid time slot endDateTime");
+  if (endTime.getTime() <= startTime.getTime()) {
+    throwError(422, "Invalid time slot time range");
+  }
 
-  const duration = Number(sportGround.sportDurationInHours || 0);
-  if (!duration || duration <= 0)
-    throwError(422, "Invalid sportDurationInHours on sport ground");
+  const now = new Date();
+  if (startTime.getTime() < now.getTime()) {
+    throwError(400, "Past time slots are not allowed");
+  }
 
-  const endTime = new Date(startTime);
-  endTime.setTime(endTime.getTime() + duration * 60 * 60 * 1000);
-
-  const overlap = await Booking.findOne({
-    sportGroundId,
+  const existing = await Booking.findOne({
+    timeSlotId,
     userId: finalUserId,
     status: { $ne: "cancelled" },
-    $or: [{ startTime: { $lt: endTime }, endTime: { $gt: startTime } }],
   });
-  if (overlap) throwError(400, "This slot is already booked for this user");
+  if (existing) throwError(400, "This slot is already booked");
+
+  if (timeSlot.isFull) {
+    throwError(400, "This slot is full");
+  }
+
+  if (timeSlot.noOfPlayers >= sportGround.maxPlayers) {
+    throwError(400, "This slot is full");
+  }
 
   const created = await Booking.create({
     userId: finalUserId,
     academyId: academy._id,
-    sportGroundId,
+    sportGroundId: sportGround._id,
+    timeSlotId,
     startTime,
     endTime,
     price: sportGround.price || 0,
+  });
+
+  await TimeSlot.findByIdAndUpdate(timeSlotId, {
+    $inc: { noOfPlayers: 1 },
+    $set: {
+      isFull: timeSlot.noOfPlayers + 1 >= sportGround.maxPlayers,
+    },
   });
 
   return await Booking.findById(created._id)
     .populate({ path: "userId", select: "name email mobile role" })
     .populate({ path: "academyId" })
     .populate({
-      path: "sportGroundId",
+      path: "timeSlotId",
       select:
-        "name sportDate sportDurationInHours sportTiming venueId sportId categoryId",
+        "sportGroundId startDateTime endDateTime sportDurationInHours noOfPlayers isAvailable isFull isActive",
+    })
+    .populate({
+      path: "sportGroundId",
+      select: "name sportId categoryId",
       populate: [
-        { path: "venueId", select: "name description image" },
         { path: "sportId", select: "name description image" },
         { path: "categoryId", select: "name description image" },
       ],

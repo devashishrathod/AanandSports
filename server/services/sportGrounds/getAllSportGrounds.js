@@ -1,14 +1,13 @@
 const mongoose = require("mongoose");
 const User = require("../../models/User");
 const SportGround = require("../../models/SportGround");
+const TimeSlot = require("../../models/TimeSlot");
 const { ROLES } = require("../../constants");
 const {
   pagination,
+  throwError,
   validateObjectId,
-  formatTimeForUi,
-  formatDateTimeForUi,
   parseIsoDateOnly,
-  parseTimeToMinutes,
 } = require("../../utils");
 
 exports.getAllSportGrounds = async (userId, query) => {
@@ -24,7 +23,6 @@ exports.getAllSportGrounds = async (userId, query) => {
     openingTime,
     closingTime,
     academyId,
-    venueId,
     sportId,
     categoryId,
     isActive,
@@ -35,13 +33,8 @@ exports.getAllSportGrounds = async (userId, query) => {
     minPlayers,
     maxTeams,
     minTeams,
-    sportDurationInHours,
-    sportDate,
-    fromSportDate,
-    toSportDate,
-    sportTime,
-    fromSportTime,
-    toSportTime,
+    fromSlotDate,
+    toSlotDate,
     fromDate,
     toDate,
     sortBy = "createdAt",
@@ -63,11 +56,6 @@ exports.getAllSportGrounds = async (userId, query) => {
   } else if (academyId) {
     validateObjectId(academyId, "Academy Id");
     match.academyId = new mongoose.Types.ObjectId(academyId);
-  }
-
-  if (venueId) {
-    validateObjectId(venueId, "Venue Id");
-    match.venueId = new mongoose.Types.ObjectId(venueId);
   }
   if (sportId) {
     validateObjectId(sportId, "Sport Id");
@@ -96,9 +84,6 @@ exports.getAllSportGrounds = async (userId, query) => {
   if (typeof minPlayers !== "undefined") match.minPlayers = Number(minPlayers);
   if (typeof maxTeams !== "undefined") match.maxTeams = Number(maxTeams);
   if (typeof minTeams !== "undefined") match.minTeams = Number(minTeams);
-  if (typeof sportDurationInHours !== "undefined") {
-    match.sportDurationInHours = Number(sportDurationInHours);
-  }
 
   if (name) match.name = { $regex: new RegExp(name, "i") };
 
@@ -116,35 +101,6 @@ exports.getAllSportGrounds = async (userId, query) => {
   if (openingTime) match.openingTime = { $regex: new RegExp(openingTime, "i") };
   if (closingTime) match.closingTime = { $regex: new RegExp(closingTime, "i") };
 
-  // Exact sportDate filter (date-only match; time ignored)
-  if (sportDate) {
-    const sdStart = parseIsoDateOnly(String(sportDate), "sportDate");
-    sdStart.setHours(0, 0, 0, 0);
-    const sdEnd = new Date(sdStart);
-    sdEnd.setHours(23, 59, 59, 999);
-    match.sportDate = { $gte: sdStart, $lte: sdEnd };
-  }
-  // sportDate filtering (date-only match: time ignored)
-  if (fromSportDate || toSportDate) {
-    // If exact sportDate already applied, don't override it.
-    if (!match.sportDate || !match.sportDate.$gte)
-      match.sportDate = match.sportDate || {};
-    if (fromSportDate) {
-      const fd = parseIsoDateOnly(String(fromSportDate), "fromSportDate");
-      fd.setHours(0, 0, 0, 0);
-      match.sportDate.$gte = fd;
-    }
-    if (toSportDate) {
-      const td = parseIsoDateOnly(String(toSportDate), "toSportDate");
-      td.setHours(23, 59, 59, 999);
-      match.sportDate.$lte = td;
-    }
-  }
-
-  // Time-of-day filtering based on sportTiming regardless of date
-  // Converts sportTiming -> minutes of day in pipeline.
-  const hasTimeFilter = sportTime || fromSportTime || toSportTime;
-
   if (fromDate || toDate) {
     match.createdAt = {};
     if (fromDate) match.createdAt.$gte = new Date(fromDate);
@@ -157,49 +113,9 @@ exports.getAllSportGrounds = async (userId, query) => {
 
   const pipeline = [{ $match: match }];
 
-  if (hasTimeFilter) {
-    pipeline.push({
-      $addFields: {
-        __sportTimeMinutes: {
-          $add: [
-            { $multiply: [{ $hour: "$sportTiming" }, 60] },
-            { $minute: "$sportTiming" },
-          ],
-        },
-      },
-    });
-
-    const timeMatch = {};
-    if (sportTime) {
-      timeMatch.__sportTimeMinutes = parseTimeToMinutes(
-        String(sportTime),
-        "sportTime",
-      );
-    } else {
-      if (fromSportTime || toSportTime) {
-        timeMatch.__sportTimeMinutes = {};
-        if (fromSportTime) {
-          timeMatch.__sportTimeMinutes.$gte = parseTimeToMinutes(
-            String(fromSportTime),
-            "fromSportTime",
-          );
-        }
-        if (toSportTime) {
-          timeMatch.__sportTimeMinutes.$lte = parseTimeToMinutes(
-            String(toSportTime),
-            "toSportTime",
-          );
-        }
-      }
-    }
-
-    pipeline.push({ $match: timeMatch });
-  }
-
   pipeline.push({
     $project: {
       academyId: 1,
-      venueId: 1,
       sportId: 1,
       categoryId: 1,
       name: 1,
@@ -209,9 +125,6 @@ exports.getAllSportGrounds = async (userId, query) => {
       openingTime: 1,
       closingTime: 1,
       level: 1,
-      sportDurationInHours: 1,
-      sportDate: 1,
-      sportTiming: 1,
       maxPlayers: 1,
       minPlayers: 1,
       maxTeams: 1,
@@ -235,15 +148,52 @@ exports.getAllSportGrounds = async (userId, query) => {
   // Populate after aggregation
   await SportGround.populate(result.data, [
     { path: "academyId", select: "name description image" },
-    { path: "venueId", select: "name description image" },
     { path: "sportId", select: "name description image" },
     { path: "categoryId", select: "name description image" },
   ]);
-  result.data = (result.data || []).map((g) => ({
-    ...g,
-    sportTimingDisplay: formatTimeForUi(g.sportTiming),
-    sportDateDisplay: formatDateTimeForUi(g.sportDate),
-  }));
+
+  const grounds = result.data || [];
+
+  if (fromSlotDate || toSlotDate) {
+    const slotMatch = { isDeleted: false };
+    if (fromSlotDate || toSlotDate) {
+      slotMatch.startDateTime = {};
+      if (fromSlotDate) {
+        const fd = parseIsoDateOnly(String(fromSlotDate), "fromSlotDate");
+        fd.setHours(0, 0, 0, 0);
+        slotMatch.startDateTime.$gte = fd;
+      }
+      if (toSlotDate) {
+        const td = parseIsoDateOnly(String(toSlotDate), "toSlotDate");
+        td.setHours(23, 59, 59, 999);
+        slotMatch.startDateTime.$lte = td;
+      }
+    }
+
+    const groundIds = grounds.map((g) => new mongoose.Types.ObjectId(g._id));
+    if (groundIds.length) {
+      slotMatch.sportGroundId = { $in: groundIds };
+      const slots = await TimeSlot.find(slotMatch)
+        .select(
+          "sportGroundId startDateTime endDateTime sportDurationInHours isAvailable isFull isActive",
+        )
+        .sort({ startDateTime: 1 })
+        .lean();
+
+      const byGround = new Map();
+      for (const s of slots) {
+        const key = String(s.sportGroundId);
+        if (!byGround.has(key)) byGround.set(key, []);
+        byGround.get(key).push(s);
+      }
+
+      result.data = grounds
+        .map((g) => ({ ...g, timeSlots: byGround.get(String(g._id)) || [] }))
+        .filter((g) => (g.timeSlots || []).length > 0);
+
+      result.total = result.data.length;
+    }
+  }
 
   return result;
 };

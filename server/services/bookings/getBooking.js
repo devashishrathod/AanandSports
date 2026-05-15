@@ -1,4 +1,5 @@
 const Booking = require("../../models/Booking");
+const User = require("../../models/User");
 const { throwError, validateObjectId } = require("../../utils");
 const { ROLES } = require("../../constants");
 
@@ -11,12 +12,16 @@ exports.getBooking = async (userId, id) => {
 
   const booking = await Booking.findById(id)
     .populate({ path: "userId", select: "name email mobile role" })
+    .populate({ path: "academyId" })
+    .populate({
+      path: "timeSlotId",
+      select:
+        "sportGroundId startDateTime endDateTime sportDurationInHours noOfPlayers isAvailable isFull isActive",
+    })
     .populate({
       path: "sportGroundId",
-      select:
-        "name sportDate sportDurationInHours sportTiming venueId sportId categoryId",
+      select: "name sportId categoryId",
       populate: [
-        { path: "venueId", select: "name description image" },
         { path: "sportId", select: "name description image" },
         { path: "categoryId", select: "name description image" },
       ],

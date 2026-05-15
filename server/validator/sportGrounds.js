@@ -16,10 +16,6 @@ exports.validateCreateSportGround = (data) => {
       "any.required": "academyId is required",
       "any.invalid": "Invalid academyId format",
     }),
-    venueId: objectId().required().messages({
-      "any.required": "venueId is required",
-      "any.invalid": "Invalid venueId format",
-    }),
     sportId: objectId().required().messages({
       "any.required": "sportId is required",
       "any.invalid": "Invalid sportId format",
@@ -40,13 +36,6 @@ exports.validateCreateSportGround = (data) => {
     openingTime: Joi.string().allow("").max(30).optional(),
     closingTime: Joi.string().allow("").max(30).optional(),
     level: Joi.string().optional(),
-    sportDurationInHours: Joi.number().required().messages({
-      "any.required": "sportDurationInHours is required",
-    }),
-    sportDate: Joi.string().required().messages({
-      "any.required": "sportDate is required",
-    }),
-    sportTiming: Joi.string().optional(),
     maxPlayers: Joi.number().required().messages({
       "any.required": "maxPlayers is required",
     }),
@@ -65,9 +54,6 @@ exports.validateCreateSportGround = (data) => {
 
 exports.validateUpdateSportGround = (payload) => {
   const updateSchema = Joi.object({
-    venueId: objectId().messages({
-      "any.invalid": "Invalid venueId format",
-    }),
     sportId: objectId().messages({
       "any.invalid": "Invalid sportId format",
     }),
@@ -86,9 +72,6 @@ exports.validateUpdateSportGround = (payload) => {
     openingTime: Joi.string().allow("").max(30).optional(),
     closingTime: Joi.string().allow("").max(30).optional(),
     level: Joi.string().optional(),
-    sportDurationInHours: Joi.number().optional(),
-    sportDate: Joi.string().optional(),
-    sportTiming: Joi.string().optional(),
     maxPlayers: Joi.number().optional(),
     minPlayers: Joi.number().optional(),
     maxTeams: Joi.number().optional(),
@@ -118,9 +101,6 @@ exports.validateGetAllSportGroundsQuery = (payload) => {
     academyId: objectId().optional().messages({
       "any.invalid": "Invalid academyId format",
     }),
-    venueId: objectId().optional().messages({
-      "any.invalid": "Invalid venueId format",
-    }),
     sportId: objectId().optional().messages({
       "any.invalid": "Invalid sportId format",
     }),
@@ -135,13 +115,8 @@ exports.validateGetAllSportGroundsQuery = (payload) => {
     minPlayers: Joi.number().integer().min(1).optional(),
     maxTeams: Joi.number().integer().min(1).optional(),
     minTeams: Joi.number().integer().min(1).optional(),
-    sportDurationInHours: Joi.number().min(0).optional(),
-    sportDate: Joi.string().optional(),
-    fromSportDate: Joi.string().optional(),
-    toSportDate: Joi.string().optional(),
-    sportTime: Joi.string().optional(),
-    fromSportTime: Joi.string().optional(),
-    toSportTime: Joi.string().optional(),
+    fromSlotDate: Joi.string().optional(),
+    toSlotDate: Joi.string().optional(),
     fromDate: Joi.date().iso().optional(),
     toDate: Joi.date().iso().optional(),
     sortBy: Joi.string().optional(),

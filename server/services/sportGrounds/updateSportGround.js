@@ -1,15 +1,7 @@
 const SportGround = require("../../models/SportGround");
-const Venue = require("../../models/Venue");
 const Sport = require("../../models/Sport");
 const Category = require("../../models/Category");
-const {
-  throwError,
-  validateObjectId,
-  parseDateTimeToSportFields,
-  parseTimeToDate,
-  formatTimeForUi,
-  formatDateTimeForUi,
-} = require("../../utils");
+const { throwError, validateObjectId } = require("../../utils");
 const { uploadImage, deleteImage } = require("../uploads");
 
 exports.updateSportGround = async (id, payload = 0, image) => {
@@ -21,7 +13,6 @@ exports.updateSportGround = async (id, payload = 0, image) => {
 
   if (payload) {
     let {
-      venueId,
       sportId,
       categoryId,
       name,
@@ -31,9 +22,6 @@ exports.updateSportGround = async (id, payload = 0, image) => {
       openingTime,
       closingTime,
       level,
-      sportDurationInHours,
-      sportDate,
-      sportTiming,
       maxPlayers,
       minPlayers,
       maxTeams,
@@ -44,13 +32,6 @@ exports.updateSportGround = async (id, payload = 0, image) => {
       isFull,
       isActive,
     } = payload;
-
-    if (venueId) {
-      validateObjectId(venueId, "Venue Id");
-      const venue = await Venue.findById(venueId);
-      if (!venue || venue.isDeleted) throwError(404, "Venue not found!");
-      sportGround.venueId = venueId;
-    }
 
     if (sportId) {
       validateObjectId(sportId, "Sport Id");
@@ -69,18 +50,6 @@ exports.updateSportGround = async (id, payload = 0, image) => {
 
     if (name) {
       name = name.toLowerCase();
-      const existing = await SportGround.findOne({
-        _id: { $ne: id },
-        venueId: sportGround.venueId,
-        name,
-        isDeleted: false,
-      });
-      if (existing) {
-        throwError(
-          400,
-          "Another sport ground exists with this name for same venue",
-        );
-      }
       sportGround.name = name;
     }
 
@@ -107,34 +76,12 @@ exports.updateSportGround = async (id, payload = 0, image) => {
     if (closingTime) sportGround.closingTime = closingTime;
     if (level) sportGround.level = level;
 
-    if (typeof sportDurationInHours !== "undefined") {
-      sportGround.sportDurationInHours = sportDurationInHours;
-    }
-
     if (typeof maxPlayers !== "undefined") sportGround.maxPlayers = maxPlayers;
     if (typeof minPlayers !== "undefined") sportGround.minPlayers = minPlayers;
     if (typeof maxTeams !== "undefined") sportGround.maxTeams = maxTeams;
     if (typeof minTeams !== "undefined") sportGround.minTeams = minTeams;
 
     if (features) sportGround.features = features;
-
-    // Date/time handling:
-    // - sportDate now expects combined datetime string (e.g. 2026-04-08 05:00 AM)
-    // - sportTiming can override time-of-day if provided
-    if (sportDate) {
-      const parsed = parseDateTimeToSportFields(String(sportDate), "sportDate");
-      sportGround.sportDate = parsed.sportDate;
-      sportGround.sportTiming = parsed.sportTiming;
-    }
-
-    if (sportTiming) {
-      const anchor = sportGround.sportDate || new Date();
-      sportGround.sportTiming = parseTimeToDate(
-        String(sportTiming),
-        anchor,
-        "sportTiming",
-      );
-    }
   }
 
   if (image) {
@@ -146,8 +93,5 @@ exports.updateSportGround = async (id, payload = 0, image) => {
   sportGround.updatedAt = new Date();
   await sportGround.save();
 
-  const obj = sportGround.toObject();
-  obj.sportTimingDisplay = formatTimeForUi(obj.sportTiming);
-  obj.sportDateDisplay = formatDateTimeForUi(obj.sportDate);
-  return obj;
+  return sportGround.toObject();
 };
